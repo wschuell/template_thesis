@@ -18,11 +18,11 @@ continuous:	$(MAIN).pdf
 .refresh:
 	touch .refresh
 
-$(MAIN).pdf:	buildfigs $(MAIN).tex .refresh $(SOURCES) $(FIGURES) $(FIGURESBIN)
+$(MAIN).pdf:	buildfigs $(MAIN).tex .refresh $(SOURCES)
 	$(LATEXMK) $(LATEXMKOPT) $(CONTINUOUS) \
 	-pdflatex="$(LATEX) $(LATEXOPT) $(NONSTOP) %O %S" $(MAIN)
 
-%.pdf:	buildfigs %.tex .refresh $(SOURCES) $(FIGURES) $(FIGURESBIN)
+%.pdf:	buildfigs %.tex .refresh $(SOURCES)
 	$(LATEXMK) $(LATEXMKOPT) \
 	-pdflatex="$(LATEX) $(LATEXOPT) %O %S" temp_$<
 
@@ -39,7 +39,7 @@ clean:
 	rm -rf *~ *.tmp
 	rm -f *.bbl *.blg *.aux *.end *.fls *.log *.out *.fdb_latexmk *.bcf *.run.xml
 
-once:	buildfigs $(MAIN).tex .refresh $(SOURCES) $(FIGURES) $(FIGURESBIN)
+once:	buildfigs $(MAIN).tex .refresh $(SOURCES)
 	$(LATEXMK) $(LATEXMKOPT) -pdflatex="$(LATEX) $(LATEXOPT) %O %S" $(MAIN)
 
 debug:
