@@ -8,7 +8,8 @@ CONTINUOUS=-pvc
 
 MAIN=main
 SOURCES=$(MAIN).tex Makefile
-FIGURES := $(shell find figures/* figures-bin/* -type f);
+FIGURES := $(shell find figures/*  -type f);
+FIGURESBIN := $(shell find figures-bin/* -type f);
 
 all:	once#$(MAIN).pdf
 
@@ -17,11 +18,11 @@ continuous:	$(MAIN).pdf
 .refresh:
 	touch .refresh
 
-$(MAIN).pdf:	buildfigs $(MAIN).tex .refresh $(SOURCES) $(FIGURES)
+$(MAIN).pdf:	buildfigs $(MAIN).tex .refresh $(SOURCES) $(FIGURES) $(FIGURESBIN)
 	$(LATEXMK) $(LATEXMKOPT) $(CONTINUOUS) \
 	-pdflatex="$(LATEX) $(LATEXOPT) $(NONSTOP) %O %S" $(MAIN)
 
-%.pdf:	buildfigs %.tex .refresh $(SOURCES) $(FIGURES)
+%.pdf:	buildfigs %.tex .refresh $(SOURCES) $(FIGURES) $(FIGURESBIN)
 	$(LATEXMK) $(LATEXMKOPT) \
 	-pdflatex="$(LATEX) $(LATEXOPT) %O %S" temp_$<
 
@@ -38,21 +39,17 @@ clean:
 	rm -rf *~ *.tmp
 	rm -f *.bbl *.blg *.aux *.end *.fls *.log *.out *.fdb_latexmk *.bcf *.run.xml
 
-once:	buildfigs $(MAIN).tex .refresh $(SOURCES) $(FIGURES)
+once:	buildfigs $(MAIN).tex .refresh $(SOURCES) $(FIGURES) $(FIGURESBIN)
 	$(LATEXMK) $(LATEXMKOPT) -pdflatex="$(LATEX) $(LATEXOPT) %O %S" $(MAIN)
 
 debug:
 	$(LATEX) $(LATEXOPT) $(MAIN)
 
 buildfigs:
-	mkdir -p figures
-	find figures-bin/* -iname "figures-bin/*.svg" | while read line ; do
-	NF="$(echo $line | sed -r "s/\.svg/\.pdf/"|sed -r "s/figures-bin/figures/")"
-	rsvg-convert -f pdf -o "$NF" "$line"
-	done
+	bash buildfigs.sh
 
 %.tex:
 	python includeonly.py $@
 
 
-.PHONY: clean force once all continuous
+.PHONY: clean force once all continuous buildfigs
