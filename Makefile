@@ -25,7 +25,7 @@ $(MAIN).pdf:	buildfigs $(MAIN).tex .refresh $(SOURCES) $(FIGURES)
 	$(LATEXMK) $(LATEXMKOPT) \
 	-pdflatex="$(LATEX) $(LATEXOPT) %O %S" temp_$<
 
-force:
+force:	buildfigs
 	touch .refresh
 	rm $(MAIN).pdf
 	$(LATEXMK) $(LATEXMKOPT) -pdflatex="$(LATEX) $(LATEXOPT) %O %S" $(MAIN)
@@ -38,7 +38,7 @@ clean:
 	rm -rf *~ *.tmp
 	rm -f *.bbl *.blg *.aux *.end *.fls *.log *.out *.fdb_latexmk *.bcf *.run.xml
 
-once:
+once:	buildfigs $(MAIN).tex .refresh $(SOURCES) $(FIGURES)
 	$(LATEXMK) $(LATEXMKOPT) -pdflatex="$(LATEX) $(LATEXOPT) %O %S" $(MAIN)
 
 debug:
