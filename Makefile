@@ -49,7 +49,7 @@ buildfigs:
 	bash buildfigs.sh
 
 biblio:
-	bash pubs export > pubs_biblio.bib
+	bash -c "pubs export > pubs_biblio.bib"
 
 %.tex:
 	python includeonly.py $@
