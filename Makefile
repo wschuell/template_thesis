@@ -18,7 +18,7 @@ continuous:	$(MAIN).pdf
 .refresh:
 	touch .refresh
 
-$(MAIN).pdf:	buildfigs $(MAIN).tex .refresh $(SOURCES)
+$(MAIN).pdf:	buildfigs biblio $(MAIN).tex .refresh $(SOURCES)
 	$(LATEXMK) $(LATEXMKOPT) $(CONTINUOUS) \
 	-pdflatex="$(LATEX) $(LATEXOPT) $(NONSTOP) %O %S" $(MAIN)
 
@@ -26,7 +26,7 @@ $(MAIN).pdf:	buildfigs $(MAIN).tex .refresh $(SOURCES)
 	$(LATEXMK) $(LATEXMKOPT) \
 	-pdflatex="$(LATEX) $(LATEXOPT) %O %S" temp_$<
 
-force:	buildfigs
+force:	buildfigs biblio
 	touch .refresh
 	rm $(MAIN).pdf
 	$(LATEXMK) $(LATEXMKOPT) -pdflatex="$(LATEX) $(LATEXOPT) %O %S" $(MAIN)
@@ -39,7 +39,7 @@ clean:
 	rm -rf *~ *.tmp
 	rm -f *.bbl *.blg *.aux *.end *.fls *.log *.out *.fdb_latexmk *.bcf *.run.xml
 
-once:	buildfigs $(MAIN).tex .refresh $(SOURCES)
+once:	buildfigs biblio $(MAIN).tex .refresh $(SOURCES)
 	$(LATEXMK) $(LATEXMKOPT) -pdflatex="$(LATEX) $(LATEXOPT) %O %S" $(MAIN)
 
 debug:
@@ -47,6 +47,9 @@ debug:
 
 buildfigs:
 	bash buildfigs.sh
+
+biblio:
+	bash pubs export > pubs_biblio.bib
 
 %.tex:
 	python includeonly.py $@
