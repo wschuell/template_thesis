@@ -1,16 +1,16 @@
 import sys
 import os
 
-
 with open('Makefile','r') as f:
 	makefile = f.readline()
 	while makefile[:5] != 'MAIN=':
 		makefile = f.readline()
-mainfile = makefile.split
+mainfile = makefile[5:][:-1]
 
-assert mainfile[-4:] == '.tex'
+if mainfile[-4:] != '.tex':
+	mainfile += '.tex'
 
-filename = sys.argv[1]
+filename = '/'.join(sys.argv[1].split('_'))
 
 assert filename[-4:] == '.tex'
 
