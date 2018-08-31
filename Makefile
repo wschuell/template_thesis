@@ -22,7 +22,7 @@ $(MAIN).pdf:	buildfigs biblio $(MAIN).tex .refresh $(SOURCES)
 	$(LATEXMK) $(LATEXMKOPT) $(CONTINUOUS) \
 	-pdflatex="$(LATEX) $(LATEXOPT) $(NONSTOP) %O %S" $(MAIN)
 
-%.pdf:	buildfigs %.tex .refresh $(SOURCES)
+%.pdf:	%.tex .refresh $(SOURCES)
 	$(LATEXMK) $(LATEXMKOPT) \
 	-pdflatex="$(LATEX) $(LATEXOPT) %O %S" temp_$<
 
