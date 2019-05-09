@@ -6,7 +6,7 @@ LATEXMK=latexmk
 LATEXMKOPT=-pdf
 CONTINUOUS=-pvc
 
-MAIN=main
+MAIN=thesis
 SOURCES=$(MAIN).tex Makefile
 FIGURES := $(shell find figures/*  -type f);
 FIGURESBIN := $(shell find figures-bin/* -type f);
@@ -26,7 +26,7 @@ $(MAIN).pdf:	buildfigs biblio $(MAIN).tex .refresh $(SOURCES)
 	$(LATEXMK) $(LATEXMKOPT) \
 	-pdflatex="$(LATEX) $(LATEXOPT) %O %S" temp_$<
 
-force:	buildfigs biblio
+force:	biblio
 	touch .refresh
 	rm $(MAIN).pdf
 	$(LATEXMK) $(LATEXMKOPT) -pdflatex="$(LATEX) $(LATEXOPT) %O %S" $(MAIN)
@@ -37,9 +37,9 @@ clean:
 	rm -f temp_*.tex
 	rm -f *.pdfsync
 	rm -rf *~ *.tmp
-	rm -f *.bbl *.blg *.aux *.end *.fls *.log *.out *.fdb_latexmk *.bcf *.run.xml
+	rm -f *.bbl *.blg *.aux *.end *.fls *.log *.out *.fdb_latexmk *.bcf *.run.xml *.lot *.lof *.loa *.mtc* *.ind *.idx *.maf *.ilg *.toc
 
-once:	buildfigs biblio $(MAIN).tex .refresh $(SOURCES)
+once:	biblio $(MAIN).tex .refresh $(SOURCES)
 	$(LATEXMK) $(LATEXMKOPT) -pdflatex="$(LATEX) $(LATEXOPT) %O %S" $(MAIN)
 
 debug:
@@ -49,7 +49,7 @@ buildfigs:
 	bash buildfigs.sh
 
 biblio:
-	bash -c "pubs export > pubs_biblio.bib"
+	bash -c "pubs export | python3 pubs_filter.py > pubs_biblio.bib"
 
 %.tex:
 	python includeonly.py $@

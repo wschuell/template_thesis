@@ -1,0 +1,312 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%New commands
+\newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Redefinition of environments
+\makeatletter
+    \if@compatibility
+\renewenvironment{titlepage}
+    {%
+      \cleardoublepage
+      \if@twocolumn
+        \@restonecoltrue\onecolumn
+      \else
+        \@restonecolfalse\newpage
+      \fi
+      \thispagestyle{empty}%
+      %\setcounter{page}\z@
+    }%
+    {\if@restonecol\twocolumn \else \newpage \fi
+    }
+\else
+\renewenvironment{titlepage}
+    {%
+      \cleardoublepage
+      \if@twocolumn
+        \@restonecoltrue\onecolumn
+      \else
+        \@restonecolfalse\newpage
+      \fi
+      \thispagestyle{empty}%
+      %\setcounter{page}\@ne
+    }%
+    {\if@restonecol\twocolumn \else \newpage \fi
+     \if@twoside\else
+       % \setcounter{page}\@ne
+     \fi
+    }
+\fi
+\makeatother
+
+\makeatletter
+  \newenvironment{frontsection}[1][Abstract]{
+  	\titlepage
+    % \null\vfil
+    %@beginparpenalty\@lowpenalty
+    \begin{center}%
+    \LARGE\textbf{#1}
+    %@endparpenalty\@M
+    \end{center}
+    }%
+    {\par\vfil\null\endtitlepage}
+    %{\par\vfil\null}
+\makeatother
+
+
+\makeatletter% since we're using commands with @ in their name
+\let\origappendix\appendix% save a copy of the original meaning of \appendix
+\renewcommand{\appendix}{%
+  \origappendix% do all the original \appendix stuff
+  \titlecontents{chapter}%
+    [0em] % distance from left margin
+    {\vspace{1.5\baselineskip}\begin{fullwidth}\LARGE\rmfamily\itshape} % above (global formatting of entry)
+    {\hspace*{0em}\appendixname~\thecontentslabel: } % before w/label (label = ``2'')
+    {\hspace*{0em}} % before w/o label
+    {\rmfamily\upshape\qquad\thecontentspage} % filler + page (leaders and page num)
+    [\end{fullwidth}] % after
+  \titleformat{\chapter}%
+    [display]% shape
+    {\relax\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\begin{fullwidth}}{}}% format applied to label+text
+    {\itshape\huge Appendix~\thechapter}% label
+    {0pt}% horizontal separation between label and title body
+    {\huge\rmfamily\itshape}% before the title body
+    [\ifthenelse{\NOT\boolean{@tufte@symmetric}}{\end{fullwidth}}{}]% after the title body
+  \setcounter{tocdepth}{1}
+  \setcounter{secnumdepth}{1}
+  %
+  % Add any other special appendix-related code here.
+  %
+}
+\makeatother% restore the special meaning of @
+
+\DeclareCiteCommand{\citeauthor}
+  {\boolfalse{citetracker}%
+   \boolfalse{pagetracker}%
+   \usebibmacro{prenote}}
+  {\ifciteindex
+     {\indexnames{labelname}}
+     {}%
+   \printtext[bibhyperref]{\printnames{labelname}}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+
+\usepackage{changepage}
+\strictpagecheck
+\strictpagechecktrue
+
+
+\makeatletter
+\newcommand{\newcleardoublepage}{\clearpage\if@twoside
+  \ifodd\c@page \hbox{}\newpage\if@twocolumn\hbox{}%
+  \newpage\fi\fi\fi}
+\makeatother
+
+\usepackage{transparent}
+
+
+\newcommand{\beforechapterpic}[3][]{%
+  % \clearpage
+  \newcleardoublepage
+
+  % \checkoddpage
+  % \ifoddpage
+  % % \else
+  %   % \mbox{}
+  %   \clearpage
+  % \fi
+\begin{figure*}[p]
+ {\includegraphics[width=\textwidth]{#2}}
+  {\centering #3}
+\end{figure*}
+}
+\newcommand{\beforechapterpicd}[3][]{%
+  % \clearpage
+  \newcleardoublepage
+
+  % \checkoddpage
+  % \ifoddpage
+  % % \else
+  %   % \mbox{}
+  %   \clearpage
+  % \fi
+\begin{figure*}[p]
+  % \includegraphics[width=\textwidth,draft]{{Missing watercolor illustrations will be finished and included later}}
+  {\centering \bf Missing watercolor illustrations will be finished and included later}
+
+  \vspace{2cm}
+
+  {\centering #3}
+\end{figure*}
+}
+
+\makeatletter
+\newcommand*{\cleartoleftpage}{%
+  \clearpage
+    \if@twoside
+    \ifodd\c@page
+      \hbox{}\newpage
+      \if@twocolumn
+        \hbox{}\newpage
+      \fi
+    \fi
+  \fi
+}
+\makeatother
+
+\makeatletter
+\newcommand*{\illustratedblankpage}{
+~
+% \vspace{2cm}
+\vfill
+\begin{figure*}
+\begin{center}
+% \includegraphics[width=\textwidth,draft]{images/defense.png}
+% {\centering Thesis defense, Talence. December 2018}
+\includegraphics[width=0.5\textwidth]{figures/agent.pdf}
+\end{center}
+\end{figure*}
+\vfill}
+\makeatother
+
+\newcommand{\lastpic}[3][]{%
+  % \clearpage
+  % \clearpage
+  % \checkoddpage
+  % \ifoddpage
+  % % \else
+  %   % \mbox{}
+  %   \clearpage
+  % \fi
+  \cleartoleftpage
+\begin{figure*}[p]
+  \includegraphics[width=\textwidth]{#2}
+  {\centering #3}
+\end{figure*}
+}
+\newcommand{\beforechapterdoublepic}[5][]{%
+  % \clearpage
+  \newcleardoublepage
+
+  % \checkoddpage
+  % \ifoddpage
+  % % \else
+  %   % \mbox{}
+  %   \clearpage
+  % \fi
+\begin{figure*}[p]
+  \includegraphics[width=\textwidth]{#2}
+  {\centering #3}
+
+\vspace{1cm}
+
+  \includegraphics[width=\textwidth]{#4}
+  {\centering #5}
+\end{figure*}
+}
+
+
+\makeatletter
+\renewcommand\@endpart{\vfil
+              \if@twoside
+                \null
+                \thispagestyle{empty}%
+                \newpage
+              \fi
+              \if@tempswa
+                \twocolumn
+              \fi}
+\makeatother
+
+
+\makeatletter
+\newcommand{\partnoblank}[2][]{
+\@openrightfalse
+\part{#2}
+\@openrighttrue}
+\makeatother
+
+\usepackage{eufrak}
+
+% \newcommand{\chapterpic}[2][]{%
+%   \checkoddpage
+%   \ifoddpage
+%     \newpage
+%   \fi
+%   \includegraphics[width=1.2\textwidth]{#3}
+% }
+
+\citetrackerfalse
+
+\usepackage{color}
+\usepackage{soul}
+\setstcolor{red}
+
+%pour corriger dans le texte, barre l'ancien texte et remplace par du texte en rouge
+\newcommand{\corr}[2]{\st{#1}{{\textcolor{red}{#2}}}}
+
+% met les notes en petit
+\usepackage[textsize=scriptsize]{todonotes}
+
+%commande pour PY pour qu'il puisse faire des commentaire
+\newcommand{\todoPY}[1]{\todo[backgroundcolor=red!40, linecolor=red!40]{#1}}
+\newcommand{\todoPYNL}[1]{\todo[backgroundcolor=red!40, noline]{#1}}
+\newcommand{\todoPYIL}[1]{\todo[backgroundcolor=red!40, inline]{#1}}
+
+
+\newcommand{\todoSB}[1]{\todo[backgroundcolor=red!40, linecolor=red!40]{#1}}
+\newcommand{\todoSBNL}[1]{\todo[backgroundcolor=red!40, noline]{#1}}
+\newcommand{\todoSBIL}[1]{\todo[backgroundcolor=red!40, inline]{#1}}
+
+\newcommand{\todoNL}[1]{\todo[noline]{#1}}
+\newcommand{\todoIL}[1]{\todo[inline]{#1}}
+
+\usepackage{printlen}
+
+
+\setcaptionfont{%
+  \normalfont\footnotesize
+}
+
+\newcommand{\acrotable}[0]{\sidenote{A table of symbols, acronyms and abbreviations can be found at the last page of this manuscript.}}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+% \algrenewcommand\textproc{}
+\algnewcommand{\LeftComment}[1]{\Statex \(\triangleright\) #1}
+
+\usepackage{stmaryrd}
+\usepackage{array}
+\usepackage{booktabs}
+% \usepackage{makecell}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{tabularx}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}\centering}m{#1}}
+
+\usepackage{enumitem}
+\setlist{itemsep=0pt,font=\normalfont\textbf}
+
+\pdfobjcompresslevel 0
+
+\usepackage{csquotes}
+
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}}
+  {\vspace{0.1cm}\signed{\usebox\mybox}\end{quote}}
+
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\hypersetup{%
+  colorlinks = true,
+  linkcolor  = DarkGreen
+}
+

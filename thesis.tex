@@ -1,0 +1,112 @@
+
+%\documentclass[a4paper,nobib,justified]{tufte-book}
+\documentclass[a4paper,nobib,justified,notoc]{tufte-book}
+\usepackage[natbib=true,backend=biber,style=authoryear-icomp,citestyle=authoryear-icomp]{biblatex}
+
+\title{PhD Thesis}
+\author{YOUR NAME}
+
+\hypersetup{colorlinks}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{booktabs}
+\usepackage[nottoc,notlof,notlot]{tocbibind}
+\usepackage{minitoc}
+
+\usepackage{lipsum}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\addbibresource{pubs_biblio.bib}
+
+% \graphicspath{{./figures-bin/}{./figures/}{./images/}{./figures/chapters/}}
+\graphicspath{{./figures/}{./images/}{./figures/chapters/}}
+
+\input{input_commands}
+
+\usepackage{makeidx}
+\makeindex
+
+%\includeonly{}
+\begin{document}
+\sloppy
+\dominitoc
+\hypersetup{pageanchor=false}
+
+{\let\cleardoublepage\clearpage
+\include{content/cover}
+\illustratedblankpage
+}
+
+\frontmatter\pagenumbering{roman}\pagestyle{empty}
+
+\pagestyle{empty}
+\newgeometry{marginratio=1:1,vmarginratio=1:1}
+
+\hypersetup{pageanchor=true}
+
+{\let\cleardoublepage\clearpage
+\include{content/acknowledgments}
+\include{content/abstract}
+}
+
+{\let\cleardoublepage\clearpage
+\tableofcontents
+\listoffigures
+\listoftables
+\listofalgorithms
+}
+\restoregeometry
+
+\mainmatter\setcounter{page}{1}\pagenumbering{arabic}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\textsc{\nouppercase{\newlinetospace{{\leftmark}}\quad\thepage}}}
+
+{\let\cleardoublepage\clearpage
+\include{content/resume}
+}
+
+\beforechapterpic{inria}{Example illustration}
+\part{Introduction}
+
+\beforechapterpic{images/sony.png}{Example illustration}
+\include{content/introduction/main}
+
+\beforechapterpic{images/como.png}{Example illustration}
+\part{A second part}
+
+\beforechapterpic{images/bayou2.png}{Example illustration}
+\include{content/chap_fake_1/main}
+
+\beforechapterpic{images/kreyon.png}{Example illustration}
+\include{content/chap_fake_2/main}
+
+\beforechapterpic{images/bcn.png}{Example illustration}
+\part{Conclusions and Perspectives}
+\beforechapterpic{images/cogsci.png}{Example illustration}
+\include{content/conclusion/main}
+\beforechapterpic{images/torun.png}{Example illustration}
+\include{content/conclusion/perspectives}
+
+
+\appendix
+
+\beforechapterpic{images/koffel.png}{Example illustration}
+\include{content/appendix/appendixA}
+\backmatter
+\setboolean{@mainmatter}{true}
+\printbibliography
+
+\setboolean{@mainmatter}{false}
+\include{content/symbol_table}
+% \printindex
+
+\lastpic{images/istanbul.png}{A backcover illustration}
+\setboolean{@mainmatter}{true}
+\end{document}
