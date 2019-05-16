@@ -38,6 +38,7 @@ With this, you can modify directly your svg files and do not worry about exporti
 
 The usage of https://github.com/pubs/pubs is implemented, but not mandatory. A filter to change dynamically some parts of the bib entries is suggested in pubs_filter.py (to avoid warnings at compilation), which you can modify at your ease.
 
+
 ### Overleaf compatibility
 
 Set up a blank overleaf project, and run ``` bash push_to_overleaf.sh```. You will be asked for the URL of the project and your credentials, the rest will be automatic. An overleaf branch is created, apart from master, that is synced with overleaf. You have to manually merge the branch into master when wanting to retrieve changes made on overleaf (Of course beforehand you need to use the pull_from_overleaf script).
