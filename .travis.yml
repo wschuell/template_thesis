@@ -9,4 +9,6 @@ install:
   - sudo apt-get install texlive-full latexmk inkscape
   - pip install pubs
 
-script: make
+script: 
+  - docker build .
+  - make
