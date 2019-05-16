@@ -3,7 +3,8 @@ python:
   - "2.7"
   - "3.6"
 before_install:
- - sudo apt-get update -qq
+  - sudo add-apt-repository ppa:jonathonf/texlive-2016 -qq
+  - sudo apt-get update -qq
 
 install:
   - sudo apt-get install texlive-full latexmk inkscape
